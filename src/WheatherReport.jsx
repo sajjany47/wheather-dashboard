@@ -7,6 +7,7 @@ import { WiHumidity } from "react-icons/wi";
 import { GiWindSlap } from "react-icons/gi";
 import { VscCompass } from "react-icons/vsc";
 import { FaDharmachakra } from "react-icons/fa6";
+import ForecastCrausol from "./ForecastCrausol";
 
 const WheatherReport = () => {
   // let aciveIndex = index.index;
@@ -34,7 +35,7 @@ const WheatherReport = () => {
       const filterData = res.forecast.forecastday.filter(
         (item) => item.date !== moment(new Date()).format("YYYY-MM-DD")
       );
-      console.log(filterData);
+
       setData({ ...res, forecast: findTodayData });
       setFutureData({ ...res, forecast: filterData });
     });
@@ -74,7 +75,7 @@ const WheatherReport = () => {
   //       .catch((error) => console.log(error));
   //   }
   // };
-
+  console.log(futureData);
   return (
     <>
       <div className="flex justify-content-end">
@@ -131,8 +132,8 @@ const WheatherReport = () => {
                     />
                   </div>
                   <div
-                    className="col-12 font-semibold"
-                    style={{ width: "60px" }}
+                    className="col-12 font-semibold text-center"
+                    style={{ width: "150px" }}
                   >
                     {data.current.condition.text}
                   </div>
@@ -166,8 +167,27 @@ const WheatherReport = () => {
               </div>
             </div>
           </div>
-          <div className="sm:col-12 md:col-4"></div>
-          <div className="sm:col-12 md:col-8"></div>
+          <div className="sm:col-12 md:col-4 text-center">
+            <h2>2 Days Forcast</h2>
+            <div className="grid ">
+              {futureData.forecast.map((item) => {
+                return (
+                  <>
+                    <div className="col-4" style={{ marginTop: "-20px" }}>
+                      <img src={item.day.condition.icon} alt="" />
+                    </div>
+                    <div className="col-4">{item.day.avgtemp_c} °C</div>
+                    <div className="col-4">
+                      {moment(item.date).format("Do MMM , YYYY")}
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          </div>
+          <div className="sm:col-12 md:col-8 text-center">
+            <ForecastCrausol forecast={data.forecast.hour} />
+          </div>
         </div>
       )}
     </>
