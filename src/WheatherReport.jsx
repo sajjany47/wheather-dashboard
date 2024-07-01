@@ -51,7 +51,7 @@ const WheatherReport = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "black", margin: "auto", padding: "auto" }}>
+    <div style={{ backgroundColor: "black", margin: "1px", padding: "10px" }}>
       <div className="flex justify-content-end">
         <AutoComplete
           value={value}
@@ -65,13 +65,27 @@ const WheatherReport = () => {
       {Object.keys(data).length > 0 && (
         <div className="grid">
           <div className="sm:col-12 md:col-6">
-            <div>
+            <div className="grid text-center mt-8">
+              <div className="col-12 font-bold">
+                {data.location.name} ,{data.location.region} ,
+                {data.location.country}
+              </div>
+              <div className="col-12 font-bold">
+                {" "}
+                <p>Last update</p>
+                <h3>{moment(data.current.last_updated).format("HH:mm")}</h3>
+                <p>
+                  {moment(data.current.last_updated).format("Do MMM , YYYY")}
+                </p>
+              </div>
+            </div>
+            {/* <div>
               {data.location.name} ,{data.location.region} ,
               {data.location.country}
             </div>
             <p>Last update</p>
             <h3>{moment(data.current.last_updated).format("HH:mm")}</h3>
-            <p>{moment(data.current.last_updated).format("Do MMM , YYYY")}</p>
+            <p>{moment(data.current.last_updated).format("Do MMM , YYYY")}</p> */}
           </div>
           <div className="sm:col-12 md:col-6">
             <div className="grid mt-3">
