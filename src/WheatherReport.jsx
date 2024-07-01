@@ -50,34 +50,8 @@ const WheatherReport = () => {
       .catch((error) => console.log(error));
   };
 
-  // const fetchData = (aciveIndex) => {
-  //   const date = new Date();
-  //   date.setDate(date.getDate() - 1);
-
-  //   if (aciveIndex === 0) {
-  //     apiService
-  //       .historyWheather("kolkata", moment(date).format("YYYY-MM-DD"))
-  //       .then((res) => {
-  //         setData({ ...res, forecast: res.forecast.forecastday[0] });
-  //       })
-  //       .catch((error) => console.log(error));
-  //   }
-  //   if (aciveIndex === 1 || aciveIndex === 2) {
-  //     apiService
-  //       .forcastDetails("kolkata", aciveIndex === 1 ? 1 : 2)
-  //       .then((res) => {
-  //         if (aciveIndex === 1) {
-  //           setData({ ...res, forecast: res.forecast.forecastday[0] });
-  //         } else {
-  //           setData({ ...res, forecast: res.forecast.forecastday[1] });
-  //         }
-  //       })
-  //       .catch((error) => console.log(error));
-  //   }
-  // };
-  console.log(futureData);
   return (
-    <>
+    <div style={{ backgroundColor: "black", margin: "auto", padding: "auto" }}>
       <div className="flex justify-content-end">
         <AutoComplete
           value={value}
@@ -90,16 +64,16 @@ const WheatherReport = () => {
       </div>
       {Object.keys(data).length > 0 && (
         <div className="grid">
-          <div className="sm:col-12 md:col-4 mt-2">
-            <h4>
+          <div className="sm:col-12 md:col-6">
+            <div>
               {data.location.name} ,{data.location.region} ,
               {data.location.country}
-            </h4>
+            </div>
             <p>Last update</p>
             <h3>{moment(data.current.last_updated).format("HH:mm")}</h3>
             <p>{moment(data.current.last_updated).format("Do MMM , YYYY")}</p>
           </div>
-          <div className="sm:col-12 md:col-8">
+          <div className="sm:col-12 md:col-6">
             <div className="grid mt-3">
               <div className="sm:col-12 md:col-4">
                 <h1>{data.current.temp_c} °C</h1>
@@ -190,7 +164,7 @@ const WheatherReport = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

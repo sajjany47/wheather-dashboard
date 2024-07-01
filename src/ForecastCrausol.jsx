@@ -41,7 +41,7 @@ export default function ForecastCrausol(props) {
           <img
             src={product.condition.icon}
             alt={product.condition.text}
-            className="w-3 shadow-2"
+            className="w-6 shadow-2"
           />
         </div>
         <div>
@@ -59,7 +59,7 @@ export default function ForecastCrausol(props) {
     <div className="card">
       <Carousel
         value={products}
-        numScroll={1}
+        numScroll={3}
         numVisible={6}
         responsiveOptions={responsiveOptions}
         itemTemplate={productTemplate}
