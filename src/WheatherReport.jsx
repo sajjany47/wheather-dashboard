@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { AutoComplete } from "primereact/autocomplete";
 import { ApiService } from "./Api";
 import moment from "moment";
@@ -22,23 +22,28 @@ const WheatherReport = () => {
     // fetchData(aciveIndex);
     dataFetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [value]);
 
   const dataFetch = () => {
     const date = new Date();
     date.setDate(date.getDate() - 1);
 
-    apiService.forcastDetails("kolkata", 3).then((res) => {
-      const findTodayData = res.forecast.forecastday.find(
-        (item) => item.date === moment(new Date()).format("YYYY-MM-DD")
-      );
-      const filterData = res.forecast.forecastday.filter(
-        (item) => item.date !== moment(new Date()).format("YYYY-MM-DD")
-      );
+    apiService
+      .forcastDetails(
+        value !== "" || Object.keys(value).length > 0 ? value.name : "kolkata",
+        3
+      )
+      .then((res) => {
+        const findTodayData = res.forecast.forecastday.find(
+          (item) => item.date === moment(new Date()).format("YYYY-MM-DD")
+        );
+        const filterData = res.forecast.forecastday.filter(
+          (item) => item.date !== moment(new Date()).format("YYYY-MM-DD")
+        );
 
-      setData({ ...res, forecast: findTodayData });
-      setFutureData({ ...res, forecast: filterData });
-    });
+        setData({ ...res, forecast: findTodayData });
+        setFutureData({ ...res, forecast: filterData });
+      });
   };
 
   const search = (event) => {
@@ -49,9 +54,9 @@ const WheatherReport = () => {
       })
       .catch((error) => console.log(error));
   };
-
+  console.log(value);
   return (
-    <div style={{ backgroundColor: "black", margin: "1px", padding: "10px" }}>
+    <div>
       <div className="flex justify-content-end">
         <AutoComplete
           value={value}
@@ -63,8 +68,8 @@ const WheatherReport = () => {
         />
       </div>
       {Object.keys(data).length > 0 && (
-        <div className="grid">
-          <div className="sm:col-12 md:col-6">
+        <div className="grid gap-1 mt-2">
+          <div className="sm:col-12 md:col-6 shadow-2">
             <div className="grid text-center mt-8">
               <div className="col-12 font-bold">
                 {data.location.name} ,{data.location.region} ,
@@ -87,7 +92,7 @@ const WheatherReport = () => {
             <h3>{moment(data.current.last_updated).format("HH:mm")}</h3>
             <p>{moment(data.current.last_updated).format("Do MMM , YYYY")}</p> */}
           </div>
-          <div className="sm:col-12 md:col-6">
+          <div className="sm:col-12 md:col-5 shadow-2">
             <div className="grid mt-3">
               <div className="sm:col-12 md:col-4">
                 <h1>{data.current.temp_c} °C</h1>
@@ -155,12 +160,13 @@ const WheatherReport = () => {
               </div>
             </div>
           </div>
-          <div className="sm:col-12 md:col-4 text-center">
+          <div className="sm:col-12 md:col-4  shadow-2">
             <h2>2 Days Forcast</h2>
             <div className="grid ">
-              {futureData.forecast.map((item) => {
+              {futureData.forecast.map((item, index) => {
                 return (
-                  <>
+                  // eslint-disable-next-line react/jsx-key
+                  <Fragment key={index}>
                     <div className="col-4" style={{ marginTop: "-20px" }}>
                       <img src={item.day.condition.icon} alt="" />
                     </div>
@@ -168,12 +174,12 @@ const WheatherReport = () => {
                     <div className="col-4">
                       {moment(item.date).format("Do MMM , YYYY")}
                     </div>
-                  </>
+                  </Fragment>
                 );
               })}
             </div>
           </div>
-          <div className="sm:col-12 md:col-8 text-center">
+          <div className="sm:col-12 md:col-7  shadow-2">
             <ForecastCrausol forecast={data.forecast.hour} />
           </div>
         </div>

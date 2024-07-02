@@ -48,8 +48,6 @@ export default function ForecastCrausol(props) {
           <h4 className="mb-1">{product.temp_c} °C</h4>
           <LuWind size={40} style={{ marginTop: 3 }} />
           <div className="">{product.wind_kph} km/h</div>
-
-          <div className="mt-1 flex flex-wrap gap-2 justify-content-center"></div>
         </div>
       </div>
     );
