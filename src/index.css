@@ -1,20 +1,52 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  /* line-height: 1.5;
-  font-weight: 400; */
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #63686d;
-
+  /* Typography */
+  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Colors */
+  color-scheme: dark;
+  --text-color: rgba(255, 255, 255, 0.9);
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --bg-main: #0e1628;
+  --bg-card: #1a2238;
+  --accent-color: #7f5af0;
+  --highlight: #00f0ff;
+
+  /* Spacing */
+  --padding-base: 1rem;
+  --radius-lg: 1rem;
 }
 
 body {
-  padding: 10px;
-  margin: 10px;
-  background-color: #63686d;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-color);
+}
+
+/* Scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Utility Classes */
+.text-muted {
+  color: var(--text-muted);
+}
+.bg-card {
+  background-color: var(--bg-card);
+}
+.rounded-lg {
+  border-radius: var(--radius-lg);
 }

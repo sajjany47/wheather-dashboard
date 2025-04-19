@@ -10,8 +10,6 @@ import { FaDharmachakra } from "react-icons/fa6";
 import ForecastCrausol from "./ForecastCrausol";
 
 const WheatherReport = () => {
-  // let aciveIndex = index.index;
-
   const apiService = new ApiService();
   const [value, setValue] = useState("");
   const [items, setItems] = useState([]);
@@ -19,15 +17,10 @@ const WheatherReport = () => {
   const [futureData, setFutureData] = useState({});
 
   useEffect(() => {
-    // fetchData(aciveIndex);
     dataFetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   const dataFetch = () => {
-    const date = new Date();
-    date.setDate(date.getDate() - 1);
-
     apiService
       .forcastDetails(
         value !== "" || Object.keys(value).length > 0 ? value.name : "kolkata",
@@ -54,10 +47,10 @@ const WheatherReport = () => {
       })
       .catch((error) => console.log(error));
   };
-  console.log(value);
+
   return (
-    <div>
-      <div className="flex justify-content-end">
+    <div className="p-3">
+      <div className="flex justify-content-end mb-3">
         <AutoComplete
           value={value}
           suggestions={items}
@@ -65,121 +58,111 @@ const WheatherReport = () => {
           onChange={(e) => setValue(e.value)}
           placeholder="Search city name"
           field="name"
+          // className="w-full sm:w-30rem"
         />
       </div>
+
       {Object.keys(data).length > 0 && (
-        <div className="grid gap-1 mt-2">
-          <div className="sm:col-12 md:col-6 shadow-2">
-            <div className="grid text-center mt-8">
-              <div className="col-12 font-bold">
-                {data.location.name} ,{data.location.region} ,
+        <div className="grid gap-3">
+          {/* Main Location + Time Info */}
+          <div className="col-12 md:col-12 bg-card p-4 border-round shadow-2">
+            <div className="text-center mb-3">
+              <h2 className="mb-1">
+                {data.location.name}, {data.location.region},{" "}
                 {data.location.country}
-              </div>
-              <div className="col-12 font-bold">
-                {" "}
-                <p>Last update</p>
-                <h3>{moment(data.current.last_updated).format("HH:mm")}</h3>
-                <p>
-                  {moment(data.current.last_updated).format("Do MMM , YYYY")}
+              </h2>
+              <p className="text-muted">Last update</p>
+              <h3 className="my-0">
+                {moment(data.current.last_updated).format("HH:mm")}
+              </h3>
+              <small className="text-muted">
+                {moment(data.current.last_updated).format("Do MMM, YYYY")}
+              </small>
+            </div>
+          </div>
+
+          {/* Temperature & Weather Icons */}
+          <div className="col-12 md:col-7 bg-card p-4 border-round shadow-2">
+            <div className="grid">
+              <div className="col-12 md:col-4">
+                <h1 className="mb-2">{data.current.temp_c} °C</h1>
+                <p className="text-muted">
+                  Feels like: {data.current.feelslike_c} °C
                 </p>
-              </div>
-            </div>
-            {/* <div>
-              {data.location.name} ,{data.location.region} ,
-              {data.location.country}
-            </div>
-            <p>Last update</p>
-            <h3>{moment(data.current.last_updated).format("HH:mm")}</h3>
-            <p>{moment(data.current.last_updated).format("Do MMM , YYYY")}</p> */}
-          </div>
-          <div className="sm:col-12 md:col-5 shadow-2">
-            <div className="grid mt-3">
-              <div className="sm:col-12 md:col-4">
-                <h1>{data.current.temp_c} °C</h1>
-                <span>Feels like</span> : {data.current.feelslike_c}
-                <div className="flex flex-column">
-                  <div className="flex gap-2">
-                    <FiSunrise size={40} style={{ marginTop: "25px" }} />
-                    <div>
-                      <p>Sunrise</p>
-                      <p>{data.forecast.astro.sunrise}</p>
-                    </div>
+                <div className="flex align-items-center gap-2 mt-4">
+                  <FiSunrise size={30} />
+                  <div>
+                    <p className="my-0">Sunrise</p>
+                    <small>{data.forecast.astro.sunrise}</small>
                   </div>
-                  <div className="flex gap-2">
-                    <FiSunset size={40} style={{ marginTop: "25px" }} />
-                    <div>
-                      <p>Sunset</p>
-                      <p>{data.forecast.astro.sunset}</p>
-                    </div>
+                </div>
+                <div className="flex align-items-center gap-2 mt-2">
+                  <FiSunset size={30} />
+                  <div>
+                    <p className="my-0">Sunset</p>
+                    <small>{data.forecast.astro.sunset}</small>
                   </div>
                 </div>
               </div>
-              <div className="sm:col-12 md:col-4 ">
-                <div className="grid">
-                  <div className="col-12 mr-4 ">
-                    {" "}
-                    <img
-                      src={data.current.condition.icon}
-                      alt=""
-                      style={{ height: "150px" }}
-                    />
-                  </div>
-                  <div
-                    className="col-12 font-semibold text-center"
-                    style={{ width: "150px" }}
-                  >
-                    {data.current.condition.text}
-                  </div>
+              <div className="col-12 md:col-4 text-center">
+                <img
+                  src={data.current.condition.icon}
+                  alt="weather-icon"
+                  className="w-6rem mb-2"
+                />
+                <div className="text-lg font-semibold">
+                  {data.current.condition.text}
                 </div>
               </div>
-              <div className="sm:col-12 md:col-4 ">
-                <div className="flex gap-4">
-                  <div>
-                    <WiHumidity size={60} />
-                    <div className="ml-3">{data.current.humidity} %</div>
-                    <div className="font-semibold">Humidity</div>
+              <div className="col-12 md:col-4">
+                <div className="flex gap-3">
+                  <div className="text-center">
+                    <WiHumidity size={40} />
+                    <div>{data.current.humidity} %</div>
+                    <small className="text-muted">Humidity</small>
                   </div>
-                  <div>
-                    <GiWindSlap size={60} />
-                    <div className="ml-3">{data.current.wind_kph} km/h</div>
-                    <div className="font-semibold">Wind Speed</div>
+                  <div className="text-center">
+                    <GiWindSlap size={40} />
+                    <div>{data.current.wind_kph} km/h</div>
+                    <small className="text-muted">Wind Speed</small>
                   </div>
                 </div>
-                <div className="flex gap-4 mt-5">
-                  <div>
-                    <VscCompass size={60} />
-                    <div className="">{data.current.pressure_mb} hpa</div>
-                    <div className="font-semibold">Pressure</div>
+                <div className="flex gap-3 mt-4">
+                  <div className="text-center">
+                    <VscCompass size={40} />
+                    <div>{data.current.pressure_mb} hPa</div>
+                    <small className="text-muted">Pressure</small>
                   </div>
-                  <div>
-                    <FaDharmachakra size={60} />
-                    <div className="ml-4">{data.current.uv}</div>
-                    <div className="font-semibold ml-3">UV</div>
+                  <div className="text-center">
+                    <FaDharmachakra size={40} />
+                    <div>{data.current.uv}</div>
+                    <small className="text-muted">UV Index</small>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="sm:col-12 md:col-4  shadow-2">
-            <h2>2 Days Forcast</h2>
-            <div className="grid ">
-              {futureData.forecast.map((item, index) => {
-                return (
-                  // eslint-disable-next-line react/jsx-key
-                  <Fragment key={index}>
-                    <div className="col-4" style={{ marginTop: "-20px" }}>
-                      <img src={item.day.condition.icon} alt="" />
-                    </div>
-                    <div className="col-4">{item.day.avgtemp_c} °C</div>
-                    <div className="col-4">
-                      {moment(item.date).format("Do MMM , YYYY")}
-                    </div>
-                  </Fragment>
-                );
-              })}
+
+          {/* 2 Days Forecast */}
+          <div className="col-12 md:col-4 bg-card p-4 border-round shadow-2">
+            <h3 className="mb-3">2-Day Forecast</h3>
+            <div className="grid">
+              {futureData.forecast.map((item, index) => (
+                <Fragment key={index}>
+                  <div className="col-4">
+                    <img src={item.day.condition.icon} alt="" />
+                  </div>
+                  <div className="col-4">{item.day.avgtemp_c} °C</div>
+                  <div className="col-4">
+                    {moment(item.date).format("Do MMM, YYYY")}
+                  </div>
+                </Fragment>
+              ))}
             </div>
           </div>
-          <div className="sm:col-12 md:col-7  shadow-2">
+
+          {/* Hourly Forecast Carousel */}
+          <div className="col-12 md:col-12 bg-card p-4 border-round shadow-2">
             <ForecastCrausol forecast={data.forecast.hour} />
           </div>
         </div>

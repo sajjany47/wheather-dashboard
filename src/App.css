@@ -1,0 +1,27 @@
+.weather-card,
+.highlight-card,
+.hourly-card,
+.sun-card,
+.other-cities {
+  background-color: #1a2238;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  color: white;
+}
+
+.highlight-box,
+.hour-box,
+.city-box {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.hour-box span {
+  font-weight: bold;
+}
+
+.city-box h5 {
+  margin-bottom: 0.5rem;
+}
